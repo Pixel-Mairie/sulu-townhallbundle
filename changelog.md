@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.1.0 (04/05/2026)
+
++ Add reference for Sulu 2.6
++ Migration annotations to attributes for entities
+
 ## 3.0.0 (12/07/2024)
 
 + Remove deliberation, job and public market
