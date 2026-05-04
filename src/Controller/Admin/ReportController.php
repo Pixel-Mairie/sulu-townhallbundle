@@ -16,6 +16,7 @@ use Pixel\TownHallBundle\Domain\Event\ReportCreatedEvent;
 use Pixel\TownHallBundle\Domain\Event\ReportModifiedEvent;
 use Pixel\TownHallBundle\Domain\Event\ReportRemovedEvent;
 use Pixel\TownHallBundle\Entity\Report;
+use Pixel\TownHallBundle\Reference\ReportReferenceProvider;
 use Sulu\Bundle\ActivityBundle\Application\Collector\DomainEventCollectorInterface;
 use Sulu\Bundle\MediaBundle\Media\Manager\MediaManagerInterface;
 use Sulu\Bundle\TrashBundle\Application\TrashManager\TrashManagerInterface;
@@ -47,6 +48,8 @@ class ReportController extends AbstractRestController implements ClassResourceIn
 
     private DomainEventCollectorInterface $domainEventCollector;
 
+    private ReportReferenceProvider $reportReferenceProvider;
+
     public function __construct(
         DoctrineListRepresentationFactory $doctrineListRepresentationFactory,
         EntityManagerInterface $entityManager,
@@ -54,6 +57,7 @@ class ReportController extends AbstractRestController implements ClassResourceIn
         ViewHandlerInterface $viewHandler,
         TrashManagerInterface $trashManager,
         DomainEventCollectorInterface $domainEventCollector,
+        ReportReferenceProvider $reportReferenceProvider,
         ?TokenStorageInterface $tokenStorage = null
     ) {
         $this->doctrineListRepresentationFactory = $doctrineListRepresentationFactory;
@@ -61,6 +65,7 @@ class ReportController extends AbstractRestController implements ClassResourceIn
         $this->mediaManager = $mediaManager;
         $this->trashManager = $trashManager;
         $this->domainEventCollector = $domainEventCollector;
+        $this->reportReferenceProvider = $reportReferenceProvider;
 
         parent::__construct($viewHandler, $tokenStorage);
     }
@@ -97,6 +102,7 @@ class ReportController extends AbstractRestController implements ClassResourceIn
             new ReportModifiedEvent($report, $data)
         );
         $this->entityManager->flush();
+        $this->reportReferenceProvider->updateReferences($report, $request->query->get('locale', 'fr'), 'admin');
         return $this->handleView($this->view($report));
     }
 
@@ -126,6 +132,7 @@ class ReportController extends AbstractRestController implements ClassResourceIn
             new ReportCreatedEvent($report, $data)
         );
         $this->entityManager->flush();
+        $this->reportReferenceProvider->updateReferences($report, $request->query->get('locale', 'fr'), 'admin');
 
         return $this->handleView($this->view($report, 201));
     }

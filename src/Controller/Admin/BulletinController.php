@@ -16,6 +16,7 @@ use Pixel\TownHallBundle\Domain\Event\BulletinCreatedEvent;
 use Pixel\TownHallBundle\Domain\Event\BulletinModifiedEvent;
 use Pixel\TownHallBundle\Domain\Event\BulletinRemovedEvent;
 use Pixel\TownHallBundle\Entity\Bulletin;
+use Pixel\TownHallBundle\Reference\BulletinReferenceProvider;
 use Sulu\Bundle\ActivityBundle\Application\Collector\DomainEventCollectorInterface;
 use Sulu\Bundle\MediaBundle\Media\Manager\MediaManagerInterface;
 use Sulu\Bundle\TrashBundle\Application\TrashManager\TrashManagerInterface;
@@ -47,6 +48,8 @@ class BulletinController extends AbstractRestController implements ClassResource
 
     private DomainEventCollectorInterface $domainEventCollector;
 
+    private BulletinReferenceProvider $bulletinReferenceProvider;
+
     public function __construct(
         DoctrineListRepresentationFactory $doctrineListRepresentationFactory,
         EntityManagerInterface $entityManager,
@@ -54,6 +57,7 @@ class BulletinController extends AbstractRestController implements ClassResource
         ViewHandlerInterface $viewHandler,
         TrashManagerInterface $trashManager,
         DomainEventCollectorInterface $domainEventCollector,
+        BulletinReferenceProvider $bulletinReferenceProvider,
         ?TokenStorageInterface $tokenStorage = null
     ) {
         $this->doctrineListRepresentationFactory = $doctrineListRepresentationFactory;
@@ -61,6 +65,7 @@ class BulletinController extends AbstractRestController implements ClassResource
         $this->mediaManager = $mediaManager;
         $this->trashManager = $trashManager;
         $this->domainEventCollector = $domainEventCollector;
+        $this->bulletinReferenceProvider = $bulletinReferenceProvider;
 
         parent::__construct($viewHandler, $tokenStorage);
     }
@@ -97,6 +102,7 @@ class BulletinController extends AbstractRestController implements ClassResource
             new BulletinModifiedEvent($bulletin, $data)
         );
         $this->entityManager->flush();
+        $this->bulletinReferenceProvider->updateReferences($bulletin, $request->query->get('locale', 'fr'), 'admin');
         return $this->handleView($this->view($bulletin));
     }
 
@@ -127,6 +133,7 @@ class BulletinController extends AbstractRestController implements ClassResource
             new BulletinCreatedEvent($bulletin, $data)
         );
         $this->entityManager->flush();
+        $this->bulletinReferenceProvider->updateReferences($bulletin, $request->query->get('locale', 'fr'), 'admin');
 
         return $this->handleView($this->view($bulletin, 201));
     }

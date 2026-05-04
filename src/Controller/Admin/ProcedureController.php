@@ -16,6 +16,7 @@ use Pixel\TownHallBundle\Domain\Event\ProcedureCreatedEvent;
 use Pixel\TownHallBundle\Domain\Event\ProcedureModifiedEvent;
 use Pixel\TownHallBundle\Domain\Event\ProcedureRemovedEvent;
 use Pixel\TownHallBundle\Entity\Procedure;
+use Pixel\TownHallBundle\Reference\ProcedureReferenceProvider;
 use Pixel\TownHallBundle\Repository\ProcedureRepository;
 use Sulu\Bundle\ActivityBundle\Application\Collector\DomainEventCollectorInterface;
 use Sulu\Bundle\CategoryBundle\Category\CategoryManagerInterface;
@@ -62,6 +63,8 @@ class ProcedureController extends AbstractRestController implements ClassResourc
 
     private DomainEventCollectorInterface $domainEventCollector;
 
+    private ProcedureReferenceProvider $procedureReferenceProvider;
+
     public function __construct(
         DoctrineListRepresentationFactory $doctrineListRepresentationFactory,
         EntityManagerInterface $entityManager,
@@ -74,6 +77,7 @@ class ProcedureController extends AbstractRestController implements ClassResourc
         RouteRepositoryInterface $routeRepository,
         TrashManagerInterface $trashManager,
         DomainEventCollectorInterface $domainEventCollector,
+        ProcedureReferenceProvider $procedureReferenceProvider,
         ?TokenStorageInterface $tokenStorage = null
     ) {
         $this->doctrineListRepresentationFactory = $doctrineListRepresentationFactory;
@@ -86,6 +90,7 @@ class ProcedureController extends AbstractRestController implements ClassResourc
         $this->routeRepository = $routeRepository;
         $this->trashManager = $trashManager;
         $this->domainEventCollector = $domainEventCollector;
+        $this->procedureReferenceProvider = $procedureReferenceProvider;
 
         parent::__construct($viewHandler, $tokenStorage);
     }
@@ -139,6 +144,7 @@ class ProcedureController extends AbstractRestController implements ClassResourc
         );
         $this->entityManager->flush();
         $this->save($procedure);
+        $this->procedureReferenceProvider->updateReferences($procedure, (string) $this->getLocale($request), 'admin');
         return $this->handleView($this->view($procedure));
     }
 
@@ -194,6 +200,7 @@ class ProcedureController extends AbstractRestController implements ClassResourc
             new ProcedureCreatedEvent($procedure, $data)
         );
         $this->entityManager->flush();
+        $this->procedureReferenceProvider->updateReferences($procedure, (string) $this->getLocale($request), 'admin');
 
         return $this->handleView($this->view($procedure, 201));
     }

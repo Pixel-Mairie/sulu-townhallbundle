@@ -3,6 +3,64 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
+        <!-- Reference -->
+
+        <service id="pixel_townhall.bulletin_reference_provider"
+                 class="Pixel\TownHallBundle\Reference\BulletinReferenceProvider">
+            <argument type="service" id="sulu_reference.reference_repository"/>
+        </service>
+
+        <service id="pixel_townhall.bulletin_reference_refresher"
+                 class="Pixel\TownHallBundle\Reference\BulletinReferenceRefresher">
+            <argument type="service" id="pixel_townhall.bulletin_reference_provider"/>
+            <argument type="service" id="townhall.bulletin_repository"/>
+            <argument type="service" id="sulu_core.webspace.webspace_manager"/>
+            <argument>%sulu.context%</argument>
+            <tag name="sulu_reference.refresher"/>
+        </service>
+
+        <service id="pixel_townhall.decree_reference_provider"
+                 class="Pixel\TownHallBundle\Reference\DecreeReferenceProvider">
+            <argument type="service" id="sulu_reference.reference_repository"/>
+        </service>
+
+        <service id="pixel_townhall.decree_reference_refresher"
+                 class="Pixel\TownHallBundle\Reference\DecreeReferenceRefresher">
+            <argument type="service" id="pixel_townhall.decree_reference_provider"/>
+            <argument type="service" id="townhall.decree_repository"/>
+            <argument type="service" id="sulu_core.webspace.webspace_manager"/>
+            <argument>%sulu.context%</argument>
+            <tag name="sulu_reference.refresher"/>
+        </service>
+
+        <service id="pixel_townhall.procedure_reference_provider"
+                 class="Pixel\TownHallBundle\Reference\ProcedureReferenceProvider">
+            <argument type="service" id="sulu_reference.reference_repository"/>
+        </service>
+
+        <service id="pixel_townhall.procedure_reference_refresher"
+                 class="Pixel\TownHallBundle\Reference\ProcedureReferenceRefresher">
+            <argument type="service" id="pixel_townhall.procedure_reference_provider"/>
+            <argument type="service" id="townhall.procedure_repository"/>
+            <argument type="service" id="sulu_core.webspace.webspace_manager"/>
+            <argument>%sulu.context%</argument>
+            <tag name="sulu_reference.refresher"/>
+        </service>
+
+        <service id="pixel_townhall.report_reference_provider"
+                 class="Pixel\TownHallBundle\Reference\ReportReferenceProvider">
+            <argument type="service" id="sulu_reference.reference_repository"/>
+        </service>
+
+        <service id="pixel_townhall.report_reference_refresher"
+                 class="Pixel\TownHallBundle\Reference\ReportReferenceRefresher">
+            <argument type="service" id="pixel_townhall.report_reference_provider"/>
+            <argument type="service" id="townhall.report_repository"/>
+            <argument type="service" id="sulu_core.webspace.webspace_manager"/>
+            <argument>%sulu.context%</argument>
+            <tag name="sulu_reference.refresher"/>
+        </service>
+
         <!-- Controller -->
         <service id="pixel_townhall.settings_route_controller"
                  class="Pixel\TownHallBundle\Controller\Admin\SettingController"
@@ -23,6 +81,7 @@
             <argument type="service" id="fos_rest.view_handler.default"/>
             <argument type="service" id="sulu_trash.trash_manager"/>
             <argument type="service" id="sulu_activity.domain_event_collector"/>
+            <argument type="service" id="pixel_townhall.report_reference_provider"/>
             <argument type="service" id="security.token_storage"/>
 
             <tag name="sulu.context" context="admin"/>
@@ -37,6 +96,7 @@
             <argument type="service" id="fos_rest.view_handler.default"/>
             <argument type="service" id="sulu_trash.trash_manager"/>
             <argument type="service" id="sulu_activity.domain_event_collector"/>
+            <argument type="service" id="pixel_townhall.bulletin_reference_provider"/>
             <argument type="service" id="security.token_storage"/>
 
             <tag name="sulu.context" context="admin"/>
@@ -56,6 +116,7 @@
             <argument type="service" id="sulu.repository.route"/>
             <argument type="service" id="sulu_trash.trash_manager"/>
             <argument type="service" id="sulu_activity.domain_event_collector"/>
+            <argument type="service" id="pixel_townhall.procedure_reference_provider"/>
             <argument type="service" id="security.token_storage"/>
 
             <tag name="sulu.context" context="admin"/>
@@ -71,6 +132,7 @@
             <argument type="service" id="sulu_trash.trash_manager"/>
             <argument type="service" id="sulu_activity.domain_event_collector"/>
             <argument type="service" id="fos_rest.view_handler.default"/>
+            <argument type="service" id="pixel_townhall.decree_reference_provider"/>
             <argument type="service" id="security.token_storage"/>
 
             <tag name="sulu.context" context="admin"/>

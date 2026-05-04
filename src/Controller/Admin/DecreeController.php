@@ -16,6 +16,7 @@ use Pixel\TownHallBundle\Domain\Event\DecreeCreatedEvent;
 use Pixel\TownHallBundle\Domain\Event\DecreeModifiedEvent;
 use Pixel\TownHallBundle\Domain\Event\DecreeRemovedEvent;
 use Pixel\TownHallBundle\Entity\Decree;
+use Pixel\TownHallBundle\Reference\DecreeReferenceProvider;
 use Sulu\Bundle\ActivityBundle\Application\Collector\DomainEventCollectorInterface;
 use Sulu\Bundle\CategoryBundle\Category\CategoryManagerInterface;
 use Sulu\Bundle\MediaBundle\Media\Manager\MediaManagerInterface;
@@ -50,6 +51,8 @@ class DecreeController extends AbstractRestController implements ClassResourceIn
 
     private DomainEventCollectorInterface $domainEventCollector;
 
+    private DecreeReferenceProvider $decreeReferenceProvider;
+
     public function __construct(
         DoctrineListRepresentationFactory $doctrineListRepresentationFactory,
         EntityManagerInterface $entityManager,
@@ -58,6 +61,7 @@ class DecreeController extends AbstractRestController implements ClassResourceIn
         TrashManagerInterface $trashManager,
         DomainEventCollectorInterface $domainEventCollector,
         ViewHandlerInterface $viewHandler,
+        DecreeReferenceProvider $decreeReferenceProvider,
         ?TokenStorageInterface $tokenStorage = null
     ) {
         $this->doctrineListRepresentationFactory = $doctrineListRepresentationFactory;
@@ -66,6 +70,7 @@ class DecreeController extends AbstractRestController implements ClassResourceIn
         $this->categoryManager = $categoryManager;
         $this->trashManager = $trashManager;
         $this->domainEventCollector = $domainEventCollector;
+        $this->decreeReferenceProvider = $decreeReferenceProvider;
         parent::__construct($viewHandler, $tokenStorage);
     }
 
@@ -98,6 +103,7 @@ class DecreeController extends AbstractRestController implements ClassResourceIn
             new DecreeModifiedEvent($decree, $data)
         );
         $this->entityManager->flush();
+        $this->decreeReferenceProvider->updateReferences($decree, $request->query->get('locale', 'fr'), 'admin');
         return $this->handleView($this->view($decree));
     }
 
@@ -131,6 +137,7 @@ class DecreeController extends AbstractRestController implements ClassResourceIn
             new DecreeCreatedEvent($decree, $data)
         );
         $this->entityManager->flush();
+        $this->decreeReferenceProvider->updateReferences($decree, $request->query->get('locale', 'fr'), 'admin');
         return $this->handleView($this->view($decree, 201));
     }
 
