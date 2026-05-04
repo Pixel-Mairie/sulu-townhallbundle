@@ -7,11 +7,9 @@ use JMS\Serializer\Annotation as Serializer;
 use Sulu\Component\Persistence\Model\AuditableInterface;
 use Sulu\Component\Persistence\Model\AuditableTrait;
 
-/**
- * @ORM\Entity()
- * @ORM\Table(name="townhall_setting")
- * @Serializer\ExclusionPolicy("all")
- */
+#[ORM\Entity()]
+#[ORM\Table(name: "townhall_setting")]
+#[Serializer\ExclusionPolicy("all")]
 class Setting implements AuditableInterface
 {
     use AuditableTrait;
@@ -22,51 +20,37 @@ class Setting implements AuditableInterface
 
     public const SECURITY_CONTEXT = 'townhall_settings.settings';
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     *
-     * @Serializer\Expose()
-     */
+    #[ORM\Id()]
+    #[ORM\GeneratedValue()]
+    #[ORM\Column(type: "integer")]
+    #[Serializer\Expose()]
     private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     *
-     * @Serializer\Expose()
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[Serializer\Expose()]
     private ?string $townhallName = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     * @Serializer\Expose()
-     */
+    #[ORM\Column(type: "text", nullable: true)]
+    #[Serializer\Expose()]
     private ?string $meteo = null;
 
-    /**
-     * @ORM\Column(type="string", nullable=true, length=255)
-     * @Serializer\Expose()
-     */
+    #[ORM\Column(type: "string", nullable: true, length: 255)]
+    #[Serializer\Expose()]
     private ?string $email;
 
-    /**
-     * @ORM\Column(type="string", nullable=true, length=255)
-     * @Serializer\Expose()
-     */
+    #[ORM\Column(type: "string", nullable: true, length: 255)]
+    #[Serializer\Expose()]
     private ?string $phone;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     * @Serializer\Expose()
-     */
+    #[ORM\Column(type: "text", nullable: true)]
+    #[Serializer\Expose()]
     private ?string $hours;
 
     /**
-     * @ORM\Column(type="json", nullable=true)
-     * @Serializer\Expose()
      * @var mixed[]
      */
+    #[ORM\Column(type: "json", nullable: true)]
+    #[Serializer\Expose()]
     private ?array $location = null;
 
     public function getId(): ?int

@@ -8,11 +8,9 @@ use Sulu\Bundle\MediaBundle\Entity\MediaInterface;
 use Sulu\Component\Persistence\Model\AuditableInterface;
 use Sulu\Component\Persistence\Model\AuditableTrait;
 
-/**
- * @ORM\Entity()
- * @ORM\Table(name="townall_report")
- * @Serializer\ExclusionPolicy("all")
- */
+#[ORM\Entity()]
+#[ORM\Table(name: "townall_report")]
+#[Serializer\ExclusionPolicy("all")]
 class Report implements AuditableInterface
 {
     use AuditableTrait;
@@ -25,44 +23,30 @@ class Report implements AuditableInterface
 
     public const SECURITY_CONTEXT = 'townhall_reports.reports';
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     *
-     * @Serializer\Expose()
-     */
+    #[ORM\Id()]
+    #[ORM\GeneratedValue()]
+    #[ORM\Column(type: "integer")]
+    #[Serializer\Expose()]
     private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Serializer\Expose()
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[Serializer\Expose()]
     private ?string $title = null;
 
-    /**
-     * @ORM\Column(type="datetime_immutable")
-     *
-     * @Serializer\Expose()
-     */
+    #[ORM\Column(type: "datetime_immutable")]
+    #[Serializer\Expose()]
     private ?\DateTimeImmutable $dateReport = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=MediaInterface::class)
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     */
+    #[ORM\ManyToOne(targetEntity: MediaInterface::class)]
+    #[ORM\JoinColumn(onDelete: "SET NULL")]
     private ?MediaInterface $document = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     * @Serializer\Expose()
-     */
+    #[ORM\Column(type: "text", nullable: true)]
+    #[Serializer\Expose()]
     private ?string $description = null;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     * @Serializer\Expose()
-     */
+    #[ORM\Column(type: "boolean", nullable: true)]
+    #[Serializer\Expose()]
     private ?bool $isActive = null;
 
     public function getId(): ?int
@@ -70,9 +54,7 @@ class Report implements AuditableInterface
         return $this->id;
     }
 
-    /**
-     * @Serializer\VirtualProperty(name="title")
-     */
+    #[Serializer\VirtualProperty(name: "title")]
     public function getTitle(): ?string
     {
         return $this->title;
@@ -95,10 +77,9 @@ class Report implements AuditableInterface
 
     /**
      * @return array<string, mixed>
-     *
-     * @Serializer\VirtualProperty()
-     * @Serializer\SerializedName("document")
      */
+    #[Serializer\VirtualProperty()]
+    #[Serializer\SerializedName("document")]
     public function getDocumentData(): ?array
     {
         if ($document = $this->getDocument()) {

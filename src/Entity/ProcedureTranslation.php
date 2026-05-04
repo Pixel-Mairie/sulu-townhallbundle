@@ -7,59 +7,44 @@ use JMS\Serializer\Annotation as Serializer;
 use Sulu\Component\Persistence\Model\AuditableInterface;
 use Sulu\Component\Persistence\Model\AuditableTrait;
 
-/**
- * @ORM\Entity()
- * @ORM\Table(name="townhall_procedure_translation")
- * @ORM\Entity(repositoryClass="Pixel\TownHallBundle\Repository\ProcedureRepository")
- * @Serializer\ExclusionPolicy("all")
- */
+#[ORM\Entity(repositoryClass: "Pixel\TownHallBundle\Repository\ProcedureRepository")]
+#[ORM\Table(name: "townhall_procedure_translation")]
+#[Serializer\ExclusionPolicy("all")]
 class ProcedureTranslation implements AuditableInterface
 {
     use AuditableTrait;
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     * @Serializer\Expose()
-     */
+    #[ORM\Id()]
+    #[ORM\GeneratedValue()]
+    #[ORM\Column(type: "integer")]
+    #[Serializer\Expose()]
     private ?int $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Pixel\TownHallBundle\Entity\Procedure", inversedBy="translations")
-     * @ORM\JoinColumn(nullable=true)
-     */
+    #[ORM\ManyToOne(targetEntity: "Pixel\TownHallBundle\Entity\Procedure", inversedBy: "translations")]
+    #[ORM\JoinColumn(nullable: true)]
     private Procedure $procedure;
 
-    /**
-     * @ORM\Column(type="string", length=5)
-     * @Serializer\Expose()
-     */
+    #[ORM\Column(type: "string", length: 5)]
+    #[Serializer\Expose()]
     private string $locale;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Serializer\Expose()
-     */
+    #[ORM\Column(type: "string", length: 255)]
+    #[Serializer\Expose()]
     private string $title;
 
-    /**
-     * @ORM\Column(type="text")
-     * @Serializer\Expose()
-     */
+    #[ORM\Column(type: "text")]
+    #[Serializer\Expose()]
     private string $description;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Serializer\Expose()
-     */
+    #[ORM\Column(type: "string", length: 255)]
+    #[Serializer\Expose()]
     private string $routePath;
 
     /**
-     * @ORM\Column(type="json", nullable=true)
-     * @Serializer\Expose()
      * @var array<mixed>|null
      */
+    #[ORM\Column(type: "json", nullable: true)]
+    #[Serializer\Expose()]
     private ?array $seo = null;
 
     public function __construct(Procedure $procedure, string $locale)

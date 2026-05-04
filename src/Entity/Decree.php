@@ -10,11 +10,9 @@ use Sulu\Bundle\MediaBundle\Entity\MediaInterface;
 use Sulu\Component\Persistence\Model\AuditableInterface;
 use Sulu\Component\Persistence\Model\AuditableTrait;
 
-/**
- * @ORM\Entity()
- * @ORM\Table(name="townhall_decree")
- * @Serializer\ExclusionPolicy("all")
- */
+#[ORM\Entity()]
+#[ORM\Table(name: "townhall_decree")]
+#[Serializer\ExclusionPolicy("all")]
 class Decree implements AuditableInterface
 {
     use AuditableTrait;
@@ -27,56 +25,40 @@ class Decree implements AuditableInterface
 
     public const SECURITY_CONTEXT = "townhall_decrees.deccres";
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     * @Serializer\Expose()
-     */
+    #[ORM\Id()]
+    #[ORM\GeneratedValue()]
+    #[ORM\Column(type: "integer")]
+    #[Serializer\Expose()]
     private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string")
-     * @Serializer\Expose()
-     */
+    #[ORM\Column(type: "string")]
+    #[Serializer\Expose()]
     private string $title;
 
-    /**
-     * @ORM\Column(type="datetime_immutable")
-     * @Serializer\Expose()
-     */
+    #[ORM\Column(type: "datetime_immutable")]
+    #[Serializer\Expose()]
     private \DateTimeImmutable $startDate;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
-     * @Serializer\Expose()
-     */
+    #[ORM\Column(type: "datetime_immutable", nullable: true)]
+    #[Serializer\Expose()]
     private ?\DateTimeImmutable $endDate = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     * @Serializer\Expose()
-     */
+    #[ORM\Column(type: "text", nullable: true)]
+    #[Serializer\Expose()]
     private ?string $description = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=MediaInterface::class)
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     * @Serializer\Expose()
-     */
+    #[ORM\ManyToOne(targetEntity: MediaInterface::class)]
+    #[ORM\JoinColumn(onDelete: "SET NULL")]
+    #[Serializer\Expose()]
     private MediaInterface $pdf;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     * @Serializer\Expose()
-     */
+    #[ORM\Column(type: "boolean", nullable: true)]
+    #[Serializer\Expose()]
     private ?bool $isActive = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=CategoryInterface::class)
-     * @ORM\JoinColumn(nullable=false)
-     * @Serializer\Expose()
-     */
+    #[ORM\ManyToOne(targetEntity: CategoryInterface::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Serializer\Expose()]
     private CategoryInterface $category; //Correspond au type d'arrêté
 
     public function getId(): ?int
