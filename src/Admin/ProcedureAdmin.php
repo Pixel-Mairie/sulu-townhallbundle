@@ -133,7 +133,7 @@ class ProcedureAdmin extends Admin
             );
 
             $viewCollection->add(
-                $this->viewBuilderFactory->createPreviewFormViewBuilder(static::EDIT_FORM_DETAILS_VIEW, '/details')
+                $this->viewBuilderFactory->createFormViewBuilder(static::EDIT_FORM_DETAILS_VIEW, '/details')
                     ->setResourceKey(Procedure::RESOURCE_KEY)
                     ->setFormKey(Procedure::FORM_KEY)
                     ->setTabTitle('sulu_admin.details')

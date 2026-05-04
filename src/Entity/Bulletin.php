@@ -8,11 +8,9 @@ use Sulu\Bundle\MediaBundle\Entity\MediaInterface;
 use Sulu\Component\Persistence\Model\AuditableInterface;
 use Sulu\Component\Persistence\Model\AuditableTrait;
 
-/**
- * @ORM\Entity()
- * @ORM\Table(name="townhall_bulletin")
- * @Serializer\ExclusionPolicy("all")
- */
+#[ORM\Entity()]
+#[ORM\Table(name: "townhall_bulletin")]
+#[Serializer\ExclusionPolicy("all")]
 class Bulletin implements AuditableInterface
 {
     use AuditableTrait;
@@ -25,50 +23,36 @@ class Bulletin implements AuditableInterface
 
     public const SECURITY_CONTEXT = 'townhall_bulletin.bulletins';
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     * @Serializer\Expose()
-     */
+    #[ORM\Id()]
+    #[ORM\GeneratedValue()]
+    #[ORM\Column(type: "integer")]
+    #[Serializer\Expose()]
     private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Serializer\Expose()
-     */
+    #[ORM\Column(type: "string", length: 255)]
+    #[Serializer\Expose()]
     private ?string $title = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     * @Serializer\Expose()
-     */
+    #[ORM\Column(type: "text", nullable: true)]
+    #[Serializer\Expose()]
     private ?string $description = null;
 
-    /**
-     * @ORM\Column(type="date_immutable")
-     * @Serializer\Expose()
-     */
+    #[ORM\Column(type: "date_immutable")]
+    #[Serializer\Expose()]
     private ?\DateTimeImmutable $dateBulletin = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=MediaInterface::class)
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     * @Serializer\Expose()
-     */
+    #[ORM\ManyToOne(targetEntity: MediaInterface::class)]
+    #[ORM\JoinColumn(onDelete: "SET NULL")]
+    #[Serializer\Expose()]
     private ?MediaInterface $document = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=MediaInterface::class)
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     * @Serializer\Expose()
-     */
+    #[ORM\ManyToOne(targetEntity: MediaInterface::class)]
+    #[ORM\JoinColumn(onDelete: "SET NULL")]
+    #[Serializer\Expose()]
     private ?MediaInterface $cover = null;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     * @Serializer\Expose()
-     */
+    #[ORM\Column(type: "boolean", nullable: true)]
+    #[Serializer\Expose()]
     private ?bool $state;
 
     public function __construct()
