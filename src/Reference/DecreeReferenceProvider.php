@@ -23,7 +23,7 @@ class DecreeReferenceProvider
             Decree::RESOURCE_KEY,
             (string) $decree->getId(),
             $locale,
-            $decree->getTitle(),
+            mb_substr((string) $decree->getTitle(), 0, 255),
             $context,
             ['id' => $decree->getId()],
         );
