@@ -23,7 +23,7 @@ class ReportReferenceProvider
             Report::RESOURCE_KEY,
             (string) $report->getId(),
             $locale,
-            mb_substr($report->getTitle() ?? '', 0, 255),
+            mb_substr($report->getTitle() ?? '', 0, 191),
             $context,
             ['id' => $report->getId()],
         );

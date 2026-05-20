@@ -50,7 +50,7 @@ class Procedure
     #[ORM\ManyToOne(targetEntity: CategoryInterface::class)]
     #[ORM\JoinColumn(nullable: false)]
     #[Serializer\Expose()]
-    private CategoryInterface $category;
+    private ?CategoryInterface $category = null;
 
     /**
      * @var Collection<string, ProcedureTranslation>

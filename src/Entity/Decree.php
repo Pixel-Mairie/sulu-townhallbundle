@@ -106,12 +106,12 @@ class Decree implements AuditableInterface
         $this->description = $description;
     }
 
-    public function getPdf(): MediaInterface
+    public function getPdf(): ?MediaInterface
     {
         return $this->pdf;
     }
 
-    public function setPdf(MediaInterface $pdf): void
+    public function setPdf(?MediaInterface $pdf): void
     {
         $this->pdf = $pdf;
     }

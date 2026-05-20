@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.1.2 (20/05/2026)
+
+- Fix media nullable for decrees
+- Fix referenceTitle too long for reference
+
 ## 3.1.1 (20/05/2026)
 
 - Fix referenceTitle too long for reference
