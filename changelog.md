@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.1.1 (20/05/2026)
+
+- Fix referenceTitle too long for reference
+
 ## 3.1.0 (04/05/2026)
 
 + Add reference for Sulu 2.6
