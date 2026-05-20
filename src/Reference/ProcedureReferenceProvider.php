@@ -23,7 +23,7 @@ class ProcedureReferenceProvider
             Procedure::RESOURCE_KEY,
             (string) $procedure->getId(),
             $locale,
-            $procedure->getTitle() ?? '',
+            mb_substr($procedure->getTitle() ?? '', 0, 255),
             $context,
             ['id' => $procedure->getId(), 'locale' => $locale],
         );
