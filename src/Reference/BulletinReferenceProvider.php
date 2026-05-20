@@ -23,7 +23,7 @@ class BulletinReferenceProvider
             Bulletin::RESOURCE_KEY,
             (string) $bulletin->getId(),
             $locale,
-            mb_substr((string) $bulletin->getTitle(), 0, 255),
+            mb_substr((string) $bulletin->getTitle(), 0, 191),
             $context,
             ['id' => $bulletin->getId()],
         );
