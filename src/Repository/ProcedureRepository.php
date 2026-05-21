@@ -63,6 +63,15 @@ class ProcedureRepository extends EntityRepository implements DataProviderReposi
         return $query->getQuery()->getSingleScalarResult();
     }
 
+    protected function append(QueryBuilder $queryBuilder, $alias, $locale, $options = []): array
+    {
+        $queryBuilder->andWhere($alias . '.state = :state');
+
+        return [
+            'state' => true,
+        ];
+    }
+
     /**
      * @param string $alias
      * @param string $locale

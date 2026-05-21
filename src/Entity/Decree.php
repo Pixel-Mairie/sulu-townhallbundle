@@ -50,7 +50,7 @@ class Decree implements AuditableInterface
     #[ORM\ManyToOne(targetEntity: MediaInterface::class)]
     #[ORM\JoinColumn(onDelete: "SET NULL")]
     #[Serializer\Expose()]
-    private MediaInterface $pdf;
+    private ?MediaInterface $pdf = null;
 
     #[ORM\Column(type: "boolean", nullable: true)]
     #[Serializer\Expose()]
