@@ -1,5 +1,10 @@
 # Changelog
 
+##  3.1.3 (21/05/2026)
+
++ Performance for smart content
+- Fix media nullable for decrees
+
 ## 3.1.2 (20/05/2026)
 
 - Fix media nullable for decrees
