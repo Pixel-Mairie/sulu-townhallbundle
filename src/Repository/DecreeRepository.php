@@ -20,6 +20,21 @@ class DecreeRepository extends EntityRepository implements DataProviderRepositor
         parent::__construct($em, new ClassMetadata(Decree::class));
     }
 
+    protected function append(QueryBuilder $queryBuilder, $alias, $locale, $options = []): array
+    {
+        $queryBuilder
+            ->andWhere($alias . '.isActive = :isActive')
+            ->andWhere($queryBuilder->expr()->orX(
+                $alias . '.endDate IS NULL',
+                $alias . '.endDate >= :now'
+            ));
+
+        return [
+            'isActive' => true,
+            'now' => new \DateTimeImmutable('today'),
+        ];
+    }
+
     /**
      * @param string $alias
      * @param string $locale
@@ -27,7 +42,7 @@ class DecreeRepository extends EntityRepository implements DataProviderRepositor
     public function appendJoins(QueryBuilder $queryBuilder, $alias, $locale): void
     {
         $queryBuilder->addSelect('category')->leftJoin($alias . '.category', 'category');
-        //$queryBuilder->addSelect($alias.'.category');
+        $queryBuilder->addSelect('pdf')->leftJoin($alias . '.pdf', 'pdf');
     }
 
     /**

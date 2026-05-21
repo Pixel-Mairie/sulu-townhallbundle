@@ -19,6 +19,15 @@ class ReportRepository extends EntityRepository implements DataProviderRepositor
         parent::__construct($em, new ClassMetadata(Report::class));
     }
 
+    protected function append(QueryBuilder $queryBuilder, $alias, $locale, $options = []): array
+    {
+        $queryBuilder->andWhere($alias . '.isActive = :isActive');
+
+        return [
+            'isActive' => true,
+        ];
+    }
+
     /**
      * @param string $alias
      * @param string $locale

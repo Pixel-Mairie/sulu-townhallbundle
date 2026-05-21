@@ -19,6 +19,15 @@ class BulletinRepository extends EntityRepository implements DataProviderReposit
         parent::__construct($em, new ClassMetadata(Bulletin::class));
     }
 
+    protected function append(QueryBuilder $queryBuilder, $alias, $locale, $options = []): array
+    {
+        $queryBuilder->andWhere($alias . '.state = :state');
+
+        return [
+            'state' => true,
+        ];
+    }
+
     /**
      * @param string $alias
      * @param string $locale
