@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.1.4 (31/08/2026)
+
+- Fix deprecation of Sulu 2.6.25
+
 ##  3.1.3 (21/05/2026)
 
 + Performance for smart content
