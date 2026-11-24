@@ -3,3 +3,21 @@ externalLink: Lien externe
 townhall.procedure: Démarche administrative
 townhall.procedure.emptyProcedure: Sélectionner une démarche
 townhall.publishedAt: Publié le
+townhall.decree.filter.type: Type d'arrêté
+townhall.decree.filter.allTypes: Tous les types
+townhall.decree.filter.year: Année
+townhall.decree.filter.allYears: Toutes les années
+townhall.decree.filter.submit: Filtrer
+townhall.decree.download: Télécharger
+townhall.decree.empty: Aucun arrêté ne correspond à votre recherche.
+townhall.decree.pagination: Pagination des arrêtés
+townhall.decree.pagination.previous: Page précédente
+townhall.decree.pagination.next: Page suivante
+townhall.report.filter.year: Année
+townhall.report.filter.allYears: Toutes les années
+townhall.report.filter.submit: Filtrer
+townhall.report.download: Télécharger
+townhall.report.empty: Aucun compte-rendu ne correspond à votre recherche.
+townhall.report.pagination: Pagination des comptes-rendus
+townhall.report.pagination.previous: Page précédente
+townhall.report.pagination.next: Page suivante
