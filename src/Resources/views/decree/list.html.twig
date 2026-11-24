@@ -1,0 +1,99 @@
+{#
+    Liste des arrêtés, alimentée par Pixel\TownHallBundle\Controller\Website\DecreeController.
+    Variables : decreesByYear, decreeTypes, decreeYears, decreeFilters, decreePagination.
+#}
+<form method="get" class="flex flex-col sm:flex-row sm:items-end gap-4 mb-10">
+    <div class="flex flex-col">
+        <label for="decree-filter-type" class="font-bold mb-1">{{ 'townhall.decree.filter.type'|trans }}</label>
+        <select id="decree-filter-type" name="type" class="rounded-lg border-gray-300 p-2">
+            <option value="">{{ 'townhall.decree.filter.allTypes'|trans }}</option>
+            {% for typeId, typeName in decreeTypes %}
+                <option value="{{ typeId }}" {% if decreeFilters.type == typeId %}selected{% endif %}>{{ typeName }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="flex flex-col">
+        <label for="decree-filter-year" class="font-bold mb-1">{{ 'townhall.decree.filter.year'|trans }}</label>
+        <select id="decree-filter-year" name="year" class="rounded-lg border-gray-300 p-2">
+            <option value="all" {% if decreeFilters.year == 'all' %}selected{% endif %}>{{ 'townhall.decree.filter.allYears'|trans }}</option>
+            {% for year in decreeYears %}
+                <option value="{{ year }}" {% if decreeFilters.year == year %}selected{% endif %}>{{ year }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit" class="bg-pmBleu transition-all hover:bg-pmRouge rounded-full px-4 py-2 text-white text-center">
+        {{ 'townhall.decree.filter.submit'|trans }}
+    </button>
+</form>
+
+{% for year, groups in decreesByYear %}
+    <section class="mb-10">
+        <h2 class="prose max-w-7xl mx-auto mb-5 text-2xl font-bold">{{ year }}</h2>
+        {% for group in groups %}
+            <h3 class="mb-3 text-xl uppercase">{{ group.name }}</h3>
+            <div class="mb-6">
+                {% for arrete in group.decrees %}
+                    <div class="w-full rounded-lg py-6 px-8 bg-gray mb-1 flex flex-col sm:flex-row">
+                        <div class="basis-3/4">
+                            <div class="flex flex-col sm:flex-row items-center mb-2 text-center sm:text-left">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="#D20547" stroke-width="2" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                <span class="date ml-2">{{ arrete.startDate|date('d/m/Y') }}</span>{% if arrete.endDate is not empty %}<span class="date ml-2">- {{ arrete.endDate|date('d/m/Y') }}</span>{% endif %}
+                                <h4 class="pl-6 font-bold uppercase">{{ arrete.title }}</h4>
+                            </div>
+                            <div class="text-center sm:text-left py-4 sm:py-0">
+                                {{ arrete.description|raw }}
+                            </div>
+                        </div>
+                        <div class="basis-1/4 text-center sm:text-right flex justify-center sm:justify-end items-center">
+                            {% if arrete.pdf is not empty %}
+                                {% set arreteDoc = sulu_resolve_media(arrete.pdf.id, app.request.locale) %}
+                                <a href="{{ arreteDoc.url }}" target="_blank" class="bg-pmBleu transition-all hover:bg-pmRouge rounded-full px-4 py-2 text-white text-center">{{ 'townhall.decree.download'|trans }}</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </section>
+{% else %}
+    <p class="mb-4">{{ 'townhall.decree.empty'|trans }}</p>
+{% endfor %}
+
+{% if decreePagination.pages > 1 %}
+    {% set current = decreePagination.page %}
+    {% set last = decreePagination.pages %}
+    {% set query = decreeFilters|filter(value => value is not null) %}
+    <nav aria-label="{{ 'townhall.decree.pagination'|trans }}">
+        <ul class="pagination flex flex-row flex-wrap justify-center items-center gap-2">
+            {% if current > 1 %}
+                <li>
+                    <a href="?{{ query|merge({page: current - 1})|url_encode }}" rel="prev" aria-label="{{ 'townhall.decree.pagination.previous'|trans }}" class="w-10 h-10 bg-pmBleu hover:bg-pmRouge transition-all rounded-full flex justify-center items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" class="w-5 h-5" aria-hidden="true"><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 278.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z" fill="#FFFFFF"/></svg>
+                    </a>
+                </li>
+            {% endif %}
+            {% for number in 1..last %}
+                {% if number == 1 or number == last or (number >= current - 2 and number <= current + 2) %}
+                    <li>
+                        {% if number == current %}
+                            <span aria-current="page" class="w-10 h-10 bg-pmRouge text-white rounded-full flex justify-center items-center">{{ number }}</span>
+                        {% else %}
+                            <a href="?{{ query|merge({page: number})|url_encode }}" class="w-10 h-10 bg-gray hover:bg-pmBleu hover:text-white transition-all rounded-full flex justify-center items-center">{{ number }}</a>
+                        {% endif %}
+                    </li>
+                {% elseif number == current - 3 or number == current + 3 %}
+                    <li aria-hidden="true">…</li>
+                {% endif %}
+            {% endfor %}
+            {% if current < last %}
+                <li>
+                    <a href="?{{ query|merge({page: current + 1})|url_encode }}" rel="next" aria-label="{{ 'townhall.decree.pagination.next'|trans }}" class="w-10 h-10 bg-pmBleu hover:bg-pmRouge transition-all rounded-full flex justify-center items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" class="w-5 h-5" aria-hidden="true"><path d="M342.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L274.7 256 105.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z" fill="#FFFFFF"/></svg>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endif %}
