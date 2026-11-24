@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.2.0 (24/11/2026)
+
++ Update display of decrees list
++ Update display of city meeting reports list
+
 ## 3.1.4 (31/08/2026)
 
 - Fix deprecation of Sulu 2.6.25
